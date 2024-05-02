@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Houston Happenings</title>
+    <!-- Background and fonts -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('pasta-background.jpg');
+            color: white;
+        }
+        h1, h2, h3 {
+            background-color: rgb(158, 28, 28);
+            padding: 10px;
+        }
+        ul {
+            list-style-type: none;
+        }
+        li {
+            margin: 5px 0;
+            transition: background-color 0.5s ease;
+        }
+        li:hover {
+            background-color: whitesmoke;
+        }
+        section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        img {
+            width: 100%;
+            height: auto;
+        }
+        .order-input {
+            width: 50px;
+        }
+        .error-message {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Houston Happenings</h1>
+    <h2>Menu</h2>
+    <!-- Quick Appetizers -->
+    <section>
+        <h3>Quick Appetizers</h3>
+        <h3>If it's not out in 10, you don't pay a cent!</h3>
+        <img src="fpickles.jpg (2).jpg" style="display: block; margin-left: auto; margin-right: auto; width: 35%;">
+        <form id="appetizer-form">
+            <ul>
+                <li>Fried Pickles - $7.50 <input type="number" class="order-input" id="fried-pickles" min="0" value="0"></li>
+                <li>Loaded Tater Tots - $8.25 <input type="number" class="order-input" id="tater-tots" min="0" value="0"></li>
+                <li>Fried Mozzarella - $8.00 <input type="number" class="order-input" id="fried-mozzarella" min="0" value="0"></li>
+                <li>Jalapeno Poppers - $7.50 <input type="number" class="order-input" id="jalapeno-poppers" min="0" value="0"></li>
+                <li>Salted Pretzel Bites - $6.25 <input type="number" class="order-input" id="pretzel-bites" min="0" value="0"></li>
+                <li>Appetizer of the day - $7.00 <input type="number" class="order-input" id="appetizer-of-the-day" min="0" value="0"></li>
+            </ul>
+            <input type="submit" value="Order">
+            <div id="appetizer-error" class="error-message"></div>
+        </form>
+    </section>
+
+    <!-- Burgers -->
+    <section>
+        <h3>Burgers</h3>
+        <h3>Hand Smashed, made from scratch and served with fries!</h3>
+        <img src="fhot.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;">
+        <form id="burger-form">
+            <ul>
+                <li>Flamin Hot Texan Burger - $12.75 <input type="number" class="order-input" id="flamin-hot-texan-burger" min="0" value="0"></li>
+                <li>Houston, We Have a Problem Burger - $13.50 <input type="number" class="order-input" id="houston-we-have-a-problem-burger" min="0" value="0"></li>
+                <li>Astro Burger - $12.50 <input type="number" class="order-input" id="astro-burger" min="0" value="0"></li>
+                <li>Rockin' Rockets Burger - $10.20 <input type="number" class="order-input" id="rockin-rockets-burger" min="0" value="0"></li>
+                <li>Burger Of The Day - $12.00 <input type="number" class="order-input" id="burger-of-the-day" min="0" value="0"></li>
+            </ul>
+            <input type="submit" value="Order">
+            <div id="burger-error" class="error-message"></div>
+        </form>
+    </section>
+
+    <!-- Entrees -->
+    <section>
+        <h3>Entrees</h3>
+        <h3>Made from scratch and made with love!</h3>
+        <img src="mac.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
+        <form id="entree-form">
+            <ul>
+                <li>Chicken Caesar Salad - $13.75 <input type="number" class="order-input" id="chicken-caesar-salad" min="0" value="0"></li>
+                <li>Spicy Brisket Sandwich - $11.50 <input type="number" class="order-input" id="spicy-brisket-sandwich" min="0" value="0"></li>
+                <li>Spicy Chicken Tacos- $10.50 <input type="number" class="order-input" id="spicy-chicken-tacos" min="0" value="0"></li>
+                <li>Grilled Chicken Mac N Cheese - $9.25 <input type="number" class="order-input" id="grilled-chicken-mac-n-cheese" min="0" value="0"></li>
+                <li>Spicy Texans Boneless Wings- $9.50 <input type="number" class="order-input" id="spicy-texans-boneless-wings" min="0" value="0"></li>
+                <li>Entree of the day - $12.00 <input type="number" class="order-input" id="entree-of-the-day" min="0" value="0"></li>
+            </ul>
+            <input type="submit" value="Order">
+            <div id="entree-error" class="error-message"></div>
+        </form>
+    </section>
+
+    <script>
+        // Validation and order processing script
+function processOrder(formId) {
+    var form = document.getElementById(formId);
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission behavior
+
+        var formData = new FormData(form); // Create a FormData object to serialize form data
+        fetch(form.action, { // Send a POST request to the server
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                // Handle successful response (e.g., display confirmation message)
+                console.log('Order submitted successfully!');
+            } else {
+                // Handle error response from the server
+                console.error('Failed to submit order:', response.statusText);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+}
+
+// Call processOrder function for each form
+processOrder('appetizer-form');
+processOrder('burger-form');
+processOrder('entree-form');
+
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/order', (req, res) => {
+    // Process the form data from req.body
+    // Calculate the total amount of the order
+    // Send back a response with the order confirmation
+    res.send('Order received!'); // Example response
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+
